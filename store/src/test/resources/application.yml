@@ -1,0 +1,20 @@
+db:
+ provider: h2
+ h2:
+  dialect: org.hibernate.dialect.H2Dialect
+  driver: org.h2.Driver
+  local:
+   url: jdbc:h2:mem:datajpa
+   user: sa
+   pass: 
+ mysql:
+  dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  driver: com.mysql.jdbc.Driver
+  local: 
+   url: jdbc:mysql://localhost/edcircle
+   user: root
+   password: mysql   
+   
+logging:
+ org.springframework: INFO
+ com.edcircle.store: DEBUG

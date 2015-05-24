@@ -1,0 +1,4 @@
+rootProject.name = 'edcircle'
+
+include 'store'
+project(':store').name = 'edcircle-store'

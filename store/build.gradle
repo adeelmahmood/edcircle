@@ -1,0 +1,14 @@
+jar { baseName = 'edcircle-store' }
+
+dependencies {
+
+	compile("org.springframework.boot:spring-boot-starter-data-jpa") {
+		exclude group: 'ch.qos.logback', module: 'logback-classic'
+	}
+
+	compile "mysql:mysql-connector-java"
+	compile "com.h2database:h2"
+
+	compile "com.fasterxml.jackson.core:jackson-core"
+	compile "com.fasterxml.jackson.core:jackson-databind"
+}
