@@ -1,6 +1,5 @@
 package com.edcircle.store.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -14,7 +13,7 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "idSeqGen", sequenceName = "ED_CIR_CLASS_ID")
 public class SchoolClass extends GenericEntity {
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "school_id", referencedColumnName = "id")
 	private School school;
 
@@ -25,6 +24,11 @@ public class SchoolClass extends GenericEntity {
 	private String grade;
 	private String section;
 	private String subject;
+
+	@Override
+	public String toString() {
+		return "SchoolClass [grade=" + grade + ", section=" + section + ", subject=" + subject + "]";
+	}
 
 	public School getSchool() {
 		return school;

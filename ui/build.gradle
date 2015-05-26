@@ -1,0 +1,17 @@
+jar { baseName 'edcircle-ui' }
+
+springBoot { layout = 'ZIP' }
+
+bootRepackage {
+	mainClass = 'com.edcircle.ui.Application'
+	enabled = true
+}
+
+dependencies {
+
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf") {
+		exclude group: 'ch.qos.logback', module: 'logback-classic'
+	}
+
+	compile(project(":edcircle-store"))
+}

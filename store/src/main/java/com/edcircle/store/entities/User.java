@@ -6,15 +6,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "edcircle_users")
-@SequenceGenerator(name = "idSeqGen", sequenceName = "ED_CIR_USERS_ID")
+@SequenceGenerator(name = "idSeqGen", sequenceName = "ED_CIR_USER_ID")
 public class User extends GenericEntity {
 
 	private String username;
@@ -23,12 +22,10 @@ public class User extends GenericEntity {
 	private String lastName;
 	private String email;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<UserRole> roles = new HashSet<UserRole>();
 
-	@ManyToOne(cascade = CascadeType.PERSIST, targetEntity = School.class)
-	@JoinColumn(name = "school_id", referencedColumnName = "id")
+	@ManyToMany(mappedBy = "admins", fetch = FetchType.EAGER)
 	private Set<School> schools = new HashSet<School>();
 
 	public String getUsername() {
@@ -73,6 +70,7 @@ public class User extends GenericEntity {
 
 	public void addRole(UserRole role) {
 		roles.add(role);
+		role.setUser(this);
 	}
 
 	public void setRoles() {

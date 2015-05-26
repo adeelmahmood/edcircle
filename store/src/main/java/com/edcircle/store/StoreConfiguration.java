@@ -92,8 +92,8 @@ public class StoreConfiguration {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", mode);
 		properties.setProperty("hibernate.dialect", dialect);
-		// properties.setProperty("hibernate.show_sql", "true");
-		// properties.setProperty("hibernate.format_sql", "true");
+//		 properties.setProperty("hibernate.show_sql", "true");
+//		 properties.setProperty("hibernate.format_sql", "true");
 		return properties;
 	}
 }

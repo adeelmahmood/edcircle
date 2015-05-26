@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout">
+<head></head>
+<body>
+	<div layout:fragment="content" layout="row" ng-controller="HomeCtrl">
+		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2"
+			md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+
+			<md-toolbar class="md-hue-2">
+				<div layout="column" class="md-toolbar-tools-bottom inset">
+					<div class="inset">	</div>
+					<div layout-align="center center">Logged in as aq728y</div>
+				</div>
+			</md-toolbar> 
+			<md-list> 
+				<md-list-item ng-repeat="item in menu"> 
+					<a ui-sref="{{item.link}}">
+						<md-item-content md-ink-ripple="" layout="row" layout-align="start center">
+							<div class="inset">
+								<ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+							</div>
+							<div class="inset">{{item.title}}</div>
+						</md-item-content>
+					</a> 
+				</md-list-item> 
+				<md-divider /> 
+			</md-list> 
+		</md-sidenav>
+
+		<div layout="column" layout-fill="" class="relative">
+			<md-toolbar>
+				<div class="md-toolbar-tools" style="text-decoration:none; color:#000;">
+					<h2 style="color:white;">EdCircle</h2>
+					<span flex=""></span>
+					<md-button aria-label="Open Settings" ng-click="toggleSidenav('left')" class="sb">
+						<ng-md-icon icon="more_vert" style="fill:white;"></ng-md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+			
+			<ui-view layout="column" layout-fill="" layout-padding="">
+			</ui-view>
+		</div>
+	</div>
+</body>
+</html>

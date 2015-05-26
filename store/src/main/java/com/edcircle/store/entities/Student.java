@@ -1,6 +1,5 @@
 package com.edcircle.store.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +13,7 @@ public class Student extends GenericEntity {
 
 	private String name;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "class_id")
 	private SchoolClass studentClass;
 
