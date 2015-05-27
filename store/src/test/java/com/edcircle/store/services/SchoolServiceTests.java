@@ -37,8 +37,7 @@ public class SchoolServiceTests {
 
 		// admin user
 		User admin = new User();
-		UserRole adminRole = new UserRole();
-		adminRole.setRole("SCHOOL_ADMIN");
+		UserRole adminRole = new UserRole("SCHOOL_ADMIN");
 		admin.addRole(adminRole);
 		admin.setUsername("admin");
 		admin.setPassword("pass");
@@ -55,8 +54,7 @@ public class SchoolServiceTests {
 
 		// create teacher user
 		User teacher = new User();
-		UserRole teacherRole = new UserRole();
-		teacherRole.setRole("SCHOOL_TEACHER");
+		UserRole teacherRole = new UserRole("SCHOOL_TEACHER");
 		teacher.addRole(teacherRole);
 		teacher.setUsername("teacher");
 		teacher.setPassword("pass");
@@ -90,8 +88,7 @@ public class SchoolServiceTests {
 
 		// create teacher user
 		User teacher = new User();
-		UserRole teacherRole = new UserRole();
-		teacherRole.setRole("SCHOOL_TEACHER");
+		UserRole teacherRole = new UserRole("SCHOOL_TEACHER");
 		teacher.addRole(teacherRole);
 		teacher.setUsername("teacher2");
 		teacher.setPassword("pass");

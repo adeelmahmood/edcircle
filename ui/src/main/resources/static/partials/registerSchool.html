@@ -1,0 +1,52 @@
+<md-content flex md-scroll-y>
+<form>
+	<div layout layout-align="end center">
+		<md-button class="md-hue-2 md-primary md-raised" ng-click="confirm()">Confirm
+		Registration</md-button>
+	</div>
+	<md-card flex-gt-sm="90" flex-gt-md="80">
+		<md-card-content>
+			<h3 class="md-title">Register New School</h3>
+			<md-content layout="row" layout-sm="column" layout-padding>
+				<md-input-container flex-gt-sm="66" flex-lt-md>
+					<label>School Name</label>
+					<input ng-model="school.name" />
+				</md-input-container>
+				<md-input-container flex>
+					<md-select placeholder="School Type" ng-model="school.type" multiple>
+						<md-option value="MIDDLE_SCHOOL">Middle School</md-option>
+						<md-option value="HIGH_SCHOOL">High School</md-option>
+					</md-select>
+				</md-input-container>
+			</md-content>
+		</md-card-content>
+	</md-card>
+	<md-card flex-gt-sm="90" flex-gt-md="80">
+		<md-card-content>
+			<h3 class="md-title">External Resources</h3>
+			<md-content layout-padding ng-repeat="resource in school.externalResources">
+				<div layout="row">
+					<md-input-container flex>
+						<label>External Resource Website Url</label>
+						<input ng-model="resource.url">
+					</md-input-container>
+					<md-button aria-label="Del" class="md-raised md-fab md-primary">Del</md-button>
+				</div>
+			</md-content>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="center center">
+			<md-button aria-label="Add" class="md-raised md-primary md-hue-2">Add External Resource</md-button>
+		</div>
+	</md-card>
+	<md-card flex-gt-sm="90" flex-gt-md="80">
+		<md-card-content>
+			<h3 class="md-title">School Administrators</h3>
+			<md-content layout="row" layout-sm="column" layout-padding>
+			</md-content>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="center center">
+			<md-button aria-label="Add" class="md-raised md-primary md-hue-2">Add Administrator</md-button>
+		</div>
+	</md-card>
+</form>
+</md-content>

@@ -8,7 +8,21 @@ app.controller('HomeCtrl', [ '$scope', '$resource', '$mdSidenav', '$mdToast',
 		$mdSidenav(menuId).toggle();
 	};
 	
-	$scope.menu = [];
+	$scope.menu = [{
+		link: 'registerSchool',
+		title: 'Register New School',
+		icon: 'dashboard'
+	}];
+	
+	$scope.school = {
+		name: "test school",
+		type: "HIGH_SCHOOL",
+		externalResources: [{
+			url: "http://github.com"
+		}, {
+			url: "http://linkedin.com"
+		}]
+	};
 	
 }])
 .config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
@@ -21,7 +35,7 @@ app.controller('HomeCtrl', [ '$scope', '$resource', '$mdSidenav', '$mdToast',
 	  $mdThemingProvider.definePalette('customBlue', customBlueMap);
 	
 	  $mdThemingProvider.theme('default')
-	    .primaryPalette('blue-grey', {
+	    .primaryPalette('light-blue', {
 	      'default': '500',
 	      'hue-1': '50'
 	    })
@@ -34,8 +48,11 @@ app.controller('HomeCtrl', [ '$scope', '$resource', '$mdSidenav', '$mdToast',
 	$stateProvider
 		.state('home', {
 			url: '/',
-			template: '<p>Home</p>'
+			templateUrl: 'partials/home.html'
+		})
+		.state('registerSchool', {
+			url: '/register-school',
+			templateUrl: 'partials/registerSchool.html'
 		})
 		;
-	
 });

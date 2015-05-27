@@ -1,0 +1,22 @@
+gray: #eee ; body {
+	background-color: #eee;
+}
+
+.sb {
+	min-width: 0;
+}
+
+md-list-item a {
+	text-decoration: none;
+	color: rgba(0, 0, 0, .87);
+}
+
+.popup .md-subheader {
+	background-color: rgb(3,169,244);
+	color: white;
+	margin: 0;
+}
+
+a:hover {
+	text-decoration: none;
+}

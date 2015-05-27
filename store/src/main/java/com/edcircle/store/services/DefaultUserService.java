@@ -1,5 +1,7 @@
 package com.edcircle.store.services;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +31,10 @@ public class DefaultUserService implements UserService {
 			log.error("error in saving user " + user.getUsername(), e);
 			throw new DataUpdateException("error in saving user " + user.getUsername(), e);
 		}
+	}
+
+	@Override
+	public Optional<User> findByUsername(String username) {
+		return userRepo.findByUsername(username);
 	}
 }

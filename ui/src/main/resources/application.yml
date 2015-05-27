@@ -24,5 +24,8 @@ db:
    user: root
    password: mysql
   
-logging:
+logging.level:
  org.thymeleaf: INFO
+ org.springframework.security: INFO
+ org.springframework.jdbc: INFO
+ com.edcircle: DEBUG

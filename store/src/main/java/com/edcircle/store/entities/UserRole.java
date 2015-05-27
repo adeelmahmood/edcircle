@@ -18,6 +18,13 @@ public class UserRole extends GenericEntity {
 
 	private String role;
 
+	public UserRole() {
+	}
+	
+	public UserRole(String role) {
+		this.role = role;
+	}
+
 	public String getRole() {
 		return role;
 	}

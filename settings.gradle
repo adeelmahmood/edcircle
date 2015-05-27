@@ -5,3 +5,6 @@ project(':store').name = 'edcircle-store'
 
 include 'ui'
 project(':ui').name = 'edcircle-ui'
+
+include 'security'
+project(':security').name = 'edcircle-security'

@@ -1,0 +1,12 @@
+jar { baseName = 'edcircle-security' }
+
+dependencies {
+
+	compile("org.springframework.boot:spring-boot-starter-security") {
+		exclude group: 'ch.qos.logback', module: 'logback-classic'
+	}
+	compile "org.springframework:spring-webmvc"
+	compile "javax.servlet:javax.servlet-api:3.+"
+
+	compile(project(":edcircle-store"))
+}
