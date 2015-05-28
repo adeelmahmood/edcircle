@@ -1,0 +1,40 @@
+<md-dialog aria-label="Administrator Configuration" class="popup" flex="40">
+<form>
+	<md-dialog-content class="sticky-container">
+		<md-subheader class="md-sticky-no-effect md-title">Administrator Configuration</md-subheader>
+		<md-content layout-padding layout="row" layout-md="column">
+			<md-input-container flex>
+				<label>First Name</label>
+				<input ng-model="admin.firstName" />
+			</md-input-container>
+			<md-input-container flex>
+				<label>Last Name</label>
+				<input ng-model="admin.lastName" />
+			</md-input-container>
+		</md-content>
+		<md-content layout-padding>
+			<div layout="column">
+				<md-input-container flex>
+					<label>Email</label>
+					<input ng-model="admin.email" />
+				</md-input-container>
+			</div>	
+		</md-content>
+		<md-content layout-padding>
+			<div layout layout-md="column">
+				<md-input-container flex>
+					<label>Username</label>
+					<input ng-model="admin.username" />
+				</md-input-container>
+				<md-input-container flex>
+					<label>Password</label>
+					<input type="password" ng-model="admin.password" />
+				</md-input-container>
+			</div>
+		</md-content>
+	</md-dialog-content>
+	<div class="md-actions" layout="row">
+		<md-button ng-click="close()"> Save Configuration</md-button>
+	</div>
+</form>
+</md-dialog>

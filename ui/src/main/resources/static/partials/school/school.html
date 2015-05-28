@@ -13,7 +13,7 @@
 					<input ng-model="school.name" />
 				</md-input-container>
 				<md-input-container flex>
-					<md-select placeholder="School Type" ng-model="school.type" multiple>
+					<md-select placeholder="School Type" ng-model="school.type">
 						<md-option value="MIDDLE_SCHOOL">Middle School</md-option>
 						<md-option value="HIGH_SCHOOL">High School</md-option>
 					</md-select>
@@ -30,22 +30,28 @@
 						<label>External Resource Website Url</label>
 						<input ng-model="resource.url">
 					</md-input-container>
-					<md-button aria-label="Del" class="md-raised md-fab md-primary">Del</md-button>
+					<md-button aria-label="Del" class="md-raised md-fab md-primary" ng-click="deleteEntity($event, 'externalResources', 'url', resource.url)">Del</md-button>
 				</div>
 			</md-content>
 		</md-card-content>
 		<div class="md-actions" layout="row" layout-align="center center">
-			<md-button aria-label="Add" class="md-raised md-primary md-hue-2">Add External Resource</md-button>
+			<md-button aria-label="Add" class="md-raised md-primary md-hue-2" ng-click="showPopup($event, 'externalResources', 'resource', null)">Add External Resource</md-button>
 		</div>
 	</md-card>
 	<md-card flex-gt-sm="90" flex-gt-md="80">
 		<md-card-content>
 			<h3 class="md-title">School Administrators</h3>
-			<md-content layout="row" layout-sm="column" layout-padding>
-			</md-content>
+			<md-divider/>
+			<md-list>
+				<md-list-item ng-repeat="admin in school.admins">
+					<p>{{admin.firstName}} {{admin.lastName}}</p>
+					<md-button aria-label="Edit" class="md-raised md-primary" ng-click="showPopup($event, 'admins', 'admin', admin)">Edit</md-button>
+					<md-button aria-label="Del" class="md-raised md-primary" ng-click="deleteEntity($event, 'admins', 'username', admin.username)">Del</md-button>
+				</md-list-item>
+			</md-list>
 		</md-card-content>
 		<div class="md-actions" layout="row" layout-align="center center">
-			<md-button aria-label="Add" class="md-raised md-primary md-hue-2">Add Administrator</md-button>
+			<md-button aria-label="Add" class="md-raised md-primary md-hue-2" ng-click="showPopup($event, 'admins', 'admin', null)">Add Administrator</md-button>
 		</div>
 	</md-card>
 </form>

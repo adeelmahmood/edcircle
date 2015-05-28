@@ -11,6 +11,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "edcircle_users")
 @SequenceGenerator(name = "idSeqGen", sequenceName = "ED_CIR_USER_ID")
@@ -23,9 +26,11 @@ public class User extends GenericEntity {
 	private String email;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+	@JsonManagedReference
 	private Set<UserRole> roles = new HashSet<UserRole>();
 
 	@ManyToMany(mappedBy = "admins", fetch = FetchType.EAGER)
+	@JsonBackReference
 	private Set<School> schools = new HashSet<School>();
 
 	public String getUsername() {

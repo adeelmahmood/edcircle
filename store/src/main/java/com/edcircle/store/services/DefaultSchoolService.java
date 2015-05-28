@@ -1,5 +1,9 @@
 package com.edcircle.store.services;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.edcircle.store.entities.School;
 import com.edcircle.store.entities.SchoolClass;
-import com.edcircle.store.entities.Student;
 import com.edcircle.store.entities.User;
 import com.edcircle.store.exceptions.DataUpdateException;
 import com.edcircle.store.repository.SchoolClassRepository;
 import com.edcircle.store.repository.SchoolRepository;
-import com.edcircle.store.repository.StudentRepository;
+import com.edcircle.store.repository.UserRepository;
 
 @Service
 public class DefaultSchoolService implements SchoolService {
@@ -21,22 +24,39 @@ public class DefaultSchoolService implements SchoolService {
 
 	private final SchoolRepository schoolRepo;
 	private final SchoolClassRepository schoolClassRepo;
-	private final StudentRepository studentRepo;
+	private final UserRepository userRepo;
 
 	@Autowired
 	public DefaultSchoolService(SchoolRepository schoolRepo, SchoolClassRepository schoolClassRepo,
-			StudentRepository studentRepo) {
+			UserRepository userRepo) {
 		this.schoolRepo = schoolRepo;
 		this.schoolClassRepo = schoolClassRepo;
-		this.studentRepo = studentRepo;
+		this.userRepo = userRepo;
 	}
 
 	@Override
 	public School save(School school) throws DataUpdateException {
-		log.debug("saving school " + school.getName());
+		log.info("saving school " + school.getName());
+		boolean isNew = school.getId() == null;
 		try {
-			// save school
-			return schoolRepo.save(school);
+			if (isNew) {
+				return schoolRepo.save(school);
+			}
+
+			// extract admins
+			Set<User> admins = new HashSet<User>();
+			admins = school.getAdmins();
+			school.setAdmins(new HashSet<User>());
+			// save school without admins
+			School saved = schoolRepo.save(school);
+			// add admins individually
+			admins.forEach((admin) -> {
+				saved.addAdmin(admin);
+				userRepo.save(admin);
+			});
+			// save school again with admins
+			return schoolRepo.save(saved);
+
 		} catch (Exception e) {
 			log.error("error in saving school " + school.getName(), e);
 			throw new DataUpdateException("error in saving school " + school.getName(), e);
@@ -45,7 +65,7 @@ public class DefaultSchoolService implements SchoolService {
 
 	@Override
 	public SchoolClass addClass(School school, SchoolClass schoolClass, User teacher) throws DataUpdateException {
-		log.debug("adding " + schoolClass + " to school " + school.getName() + " with teacher " + teacher);
+		log.info("adding " + schoolClass + " to school " + school.getName() + " with teacher " + teacher);
 		try {
 			// set properties
 			schoolClass.setSchool(school);
@@ -61,17 +81,12 @@ public class DefaultSchoolService implements SchoolService {
 	}
 
 	@Override
-	public Student addStudent(SchoolClass schoolClass, Student student) throws DataUpdateException {
-		log.debug("adding student " + student.getName() + " to class " + schoolClass);
-		try {
-			// set properties
-			student.setStudentClass(schoolClass);
+	public Optional<School> findByName(String name) {
+		return schoolRepo.findByName(name);
+	}
 
-			// save student
-			return studentRepo.save(student);
-		} catch (Exception e) {
-			log.error("error in adding student " + student.getName(), e);
-			throw new DataUpdateException("error in adding student " + student.getName(), e);
-		}
+	@Override
+	public Optional<School> findById(long id) {
+		return Optional.of(schoolRepo.findOne(id));
 	}
 }

@@ -1,0 +1,16 @@
+<md-dialog aria-label="External Resource Configuration" class="popup" flex="40">
+<form>
+	<md-dialog-content class="sticky-container">
+		<md-subheader class="md-sticky-no-effect md-title">External Resource Configuration</md-subheader>
+		<md-content layout-padding layout="column">
+			<md-input-container flex>
+				<label>External Resource Website Url</label>
+				<input ng-model="resource.url" />
+			</md-input-container>
+		</md-content>
+	</md-dialog-content>
+	<div class="md-actions" layout="row">
+		<md-button ng-click="close()"> Save Configuration</md-button>
+	</div>
+</form>
+</md-dialog>

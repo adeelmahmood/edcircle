@@ -44,15 +44,13 @@ public class StoreConfiguration {
 		System.out.println("=== Datasource Configuration ===");
 		DataSource dataSource = new DataSource();
 
-		String environment = env.getRequiredProperty("env");
-		System.out.println("environment => " + environment);
 		String dbProvider = env.getRequiredProperty("db.provider");
 		System.out.println("dbProvider => " + dbProvider);
 		String driver = env.getProperty("db." + dbProvider + ".driver", "");
 		System.out.println("driver => " + driver);
-		String url = env.getProperty("db." + dbProvider + "." + environment + ".url", "");
-		String user = env.getProperty("db." + dbProvider + "." + environment + ".user", "");
-		String pass = env.getProperty("db." + dbProvider + "." + environment + ".password", "");
+		String url = env.getProperty("db." + dbProvider + ".url", "");
+		String user = env.getProperty("db." + dbProvider + ".user", "");
+		String pass = env.getProperty("db." + dbProvider + ".password", "");
 
 		System.out.println("url => " + url);
 		System.out.println("user => " + user);
