@@ -13,6 +13,9 @@ public class Student extends GenericEntity {
 
 	private String name;
 
+	private String parentName;
+	private String parentEmail;
+
 	@ManyToOne
 	@JoinColumn(name = "class_id")
 	private SchoolClass studentClass;
@@ -31,5 +34,21 @@ public class Student extends GenericEntity {
 
 	public void setStudentClass(SchoolClass studentClass) {
 		this.studentClass = studentClass;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
+	public String getParentEmail() {
+		return parentEmail;
+	}
+
+	public void setParentEmail(String parentEmail) {
+		this.parentEmail = parentEmail;
 	}
 }

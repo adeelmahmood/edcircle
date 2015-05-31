@@ -1,5 +1,5 @@
 var app = angular.module('edcircle', 
-		['ngResource', 'ui.router', 'ngMaterial', 'ngMdIcons' , 'ngMessages']);
+		['ngResource', 'ui.router', 'ngMaterial', 'ngMdIcons' , 'ngMessages', 'angularFileUpload']);
 
 app.controller('HomeCtrl', ['$scope', '$mdSidenav', '$resource', 
                              function($scope, $mdSidenav, $resource) {
@@ -55,7 +55,7 @@ app.controller('HomeCtrl', ['$scope', '$mdSidenav', '$resource',
 	
 }])
 app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$state', '$stateParams', '$mdToast', 
-		'$mdDialog', '$filter', function($scope, $resource, $state, $stateParams, $mdToast, $mdDialog, $filter) {
+		'$mdDialog', function($scope, $resource, $state, $stateParams, $mdToast, $mdDialog) {
 
 	$scope.school = {};
 	
@@ -202,8 +202,60 @@ app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$state', '$statePa
 					$scope.classes.splice($scope.findByParam($scope.classes, 'id', cls.id), 1);
 			});
 	    });
-	}
+	};
 	
+}])
+app.controller('StudentsCtl', [ '$scope', '$resource', '$state', '$stateParams', '$mdToast', '$mdDialog', 'FileUploader', 
+		function($scope, $resource, $state, $stateParams, $mdToast, $mdDialog, FileUploader) {
+
+	$scope.studentsQuery = $resource('/query/students/class/:classId', {isArray:false});
+	$scope.studentsQuery
+		.query({classId:$stateParams.classId}, function(data) {
+			$scope.students = data;
+	});
+	
+	$scope.classQuery = $resource('/query/classes/:classId', {isArray:false});
+	$scope.classQuery
+		.get({classId:$stateParams.classId}, function(data) {
+			$scope.cls = data;
+	});
+	
+	$scope.uploader = new FileUploader({
+		url: '/students/import'
+	});
+	
+	$scope.uploader.onBeforeUploadItem = function(item) {
+		 item.formData.push({classId: $scope.cls.id});
+		 $scope.importing = true;
+	};
+	
+	$scope.uploader.onSuccessItem = function(item, response, status, headers) {
+		$scope.showAlert('Success', response);
+		$scope.importing = false;
+	};
+	
+	$scope.uploader.onErrorItem = function(item, response, status, headers) {
+		$scope.showAlert('Error', response);
+		$scope.importing = false;
+	};
+	
+	$scope.uploadStudentsFiles = function() {
+		$scope.uploader.uploadAll();
+	};
+	
+	$scope.showAlert = function(ev, title, msg) {
+	    $mdDialog.show(
+	      $mdDialog.alert()
+	        .parent(angular.element(document.body))
+	        .title(title)
+	        .content(msg)
+	        .ariaLabel(title)
+	        .ok('Close')
+	        .targetEvent(ev)
+	    ).then(function(){
+	    	$state.transitionTo('students', {classId:$scope.cls.id}, { reload: true, inherit: true, notify: true });
+	    });
+	  };
 }])
 .config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
 	var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
@@ -215,7 +267,7 @@ app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$state', '$statePa
 	  $mdThemingProvider.definePalette('customBlue', customBlueMap);
 	
 	  $mdThemingProvider.theme('default')
-	    .primaryPalette('light-green', {
+	    .primaryPalette('light-blue', {
 	      'default': '500',
 	      'hue-1': '50'
 	    })
@@ -248,6 +300,16 @@ app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$state', '$statePa
 			url: '/school-home/:schoolId',
 			templateUrl: 'partials/school/school-home.html',
 			controller: 'RegisterSchoolCtl'
+		})
+		.state('students', {
+			url: '/students/:classId',
+			templateUrl: 'partials/student/students.html',
+			controller: 'StudentsCtl'
+		})
+		.state('import-students', {
+			url: '/students/:classId/import',
+			templateUrl: 'partials/student/import.html',
+			controller: 'StudentsCtl'
 		})
 		;
 });

@@ -26,4 +26,8 @@ public class ClassesQueryController {
 		return service.findBySchool(id);
 	}
 
+	@RequestMapping("/{id}")
+	public SchoolClass id(@PathVariable long id) {
+		return service.findById(id).orElse(new SchoolClass());
+	}
 }

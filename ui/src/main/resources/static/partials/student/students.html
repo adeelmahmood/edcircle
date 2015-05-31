@@ -1,0 +1,27 @@
+<md-content flex md-scroll-y>
+	<h3 class="md-pageheader">Students for ({{cls.school.name}}) - ({{cls.grade}}:{{cls.section}}:{{cls.subject}})</h3>
+	<div layout layout-align="end center">
+		<md-button class="md-hue-2 md-primary md-raised" ui-sref="import-students({classId:cls.id})">Import Students</md-button>
+	</div>
+	<div class="inset" hide-sm></div>
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>Student Name</th>
+				<th>Parent Name</th>
+				<th>Parent Email</th>
+				<th></th>	
+				<th></th>	
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="student in students">
+				<td>{{student.name}}</td>
+				<td>{{student.parentName}}</td>
+				<td>{{student.parentEmail}}</td>
+				<td><a href ng-click="deleteClass($event, cls)">Edit</a></td>
+				<td><a href ng-click="deleteClass($event, cls)">Delete</a></td>
+			</tr>
+		</tbody>
+	</table>
+</md-content>

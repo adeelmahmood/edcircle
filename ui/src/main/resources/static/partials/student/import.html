@@ -1,0 +1,24 @@
+<md-content flex md-scroll-y>
+	<h3 class="md-pageheader">Students for ({{cls.school.name}}) - ({{cls.grade}}:{{cls.section}}:{{cls.subject}})</h3>
+	<div class="inset"></div>
+	<form method="POST" enctype="multipart/form-data" role="form">
+		<md-card flex-gt-sm="90" flex-gt-md="80">
+			<md-card-content>
+				<h3 class="md-title">Import Students</h3>
+				<md-content layout="row" layout-sm="column" layout-padding>
+					<md-input-container flex>
+						<input type="file" aria-label="import" nv-file-select=""
+						uploader="uploader" options="{fileType: 'studentsFile'}" />
+					</md-input-container>
+				</md-content>
+				<md-progress-linear ng-show="importing" md-mode="indeterminate"></md-progress-linear>
+			</md-card-content>
+			<div class="md-actions" layout="row" layout-align="center center">
+				<md-button class="md-raised md-primary md-hue-2" ng-click="uploadStudentsFiles()" 
+					ng-disabled="uploader.isUploading">Submit</md-button>
+				<md-button class="md-raised" ui-sref="students({classId:cls.id})"
+					ng-disabled="uploader.isUploading">Go Back</md-button>
+			</div>
+		</md-card>
+	</form>
+</md-content>

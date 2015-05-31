@@ -70,5 +70,5 @@ println "Using Spring Boot version: [$springBootVersion]"
 println "Using Java version: [" + System.getProperty("java.version") + "]"
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.12'
+	gradleVersion = '2.0'
 }

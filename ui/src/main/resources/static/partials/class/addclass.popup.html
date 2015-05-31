@@ -2,7 +2,7 @@
 <form>
 	<md-dialog-content class="sticky-container">
 		<md-subheader class="md-sticky-no-effect md-title">Class Configuration</md-subheader>
-		<md-content layout-padding layout="row" layout-md="column">
+		<md-content layout-padding layout="row" layout-md="column" layout-sm="column">
 			<md-input-container flex>
 				<label>Grade</label>
 				<input ng-model="cls.grade" />
@@ -22,7 +22,7 @@
 		</md-content>
 		<md-divider/>
 		<md-subheader>Teacher</md-subheader>
-		<md-content layout-padding layout="row" layout-md="column">
+		<md-content layout-padding layout="row" layout-md="column" layout-sm="column">
 			<md-input-container flex>
 				<label>First Name</label>
 				<input ng-model="cls.teacher.firstName" />
@@ -41,7 +41,7 @@
 			</div>	
 		</md-content>
 		<md-content layout-padding>
-			<div layout layout-md="column">
+			<div layout layout-md="column" layout-sm="column">
 				<md-input-container flex>
 					<label>Username</label>
 					<input ng-model="cls.teacher.username" />

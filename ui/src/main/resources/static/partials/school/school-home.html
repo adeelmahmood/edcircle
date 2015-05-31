@@ -1,18 +1,19 @@
 <md-content flex md-scroll-y>
-	<h2 class="md-display-2">
+	<h2 class="md-display-2" layout layout-align="start center" style="margin-top: 0;">
+		<img src="images/school-logo.png" /> 
 		{{school.name}} - Home Page
 	</h2>
-	<div layout layout-align="start center">
-		<md-button class="md-hue-2 md-warn md-raised" ng-click="delete()">Delete School</md-button>
+	<div layout layout-align="end center">
 		<md-button class="md-hue-2 md-primary md-raised" ng-click="showClassPopup($event, null)">Add A Class</md-button>
+		<md-button class="md-hue-2 md-warn md-raised" ng-click="delete()">Delete School</md-button>
 	</div>
 	<div class="inset" hide-sm></div>
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th>Subject</th>
-				<th>Section</th>
 				<th>Grade</th>
+				<th>Section</th>
+				<th>Subject</th>
 				<th>Teacher</th>
 				<th></th>
 				<th></th>
@@ -22,12 +23,12 @@
 		<tbody>
 			<tr ng-repeat="cls in classes">
 				<td>{{cls.grade}}</td>
-				<td>{{cls.subject}}</td>
 				<td>{{cls.section}}</td>
+				<td>{{cls.subject}}</td>
 				<td>{{cls.teacher.firstName}} {{cls.teacher.lastName}}</td>
-				<td><a href ng-click="showClassPopup($event, cls)">Edit</a></td>
+				<td><a href ui-sref="students({classId:cls.id})">Students</a></td>
 				<td><a href ng-click="deleteClass($event, cls)">Delete</a></td>
-				<td><a href ng-click="deleteClass($event, cls)">Add Students</a></td>
+				<td><a href ng-click="showClassPopup($event, cls)">Edit</a></td>
 			</tr>
 		</tbody>
 	</table>

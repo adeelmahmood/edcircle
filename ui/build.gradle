@@ -15,4 +15,7 @@ dependencies {
 
 	compile(project(":edcircle-store"))
 	compile(project(":edcircle-security"))
+
+	compile 'commons-io:commons-io:2.4'
+
 }
