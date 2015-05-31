@@ -14,13 +14,18 @@ import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import com.edcircle.store.entities.User;
 import com.edcircle.store.entities.UserRole;
 import com.edcircle.store.exceptions.DataUpdateException;
 import com.edcircle.store.services.UserService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @ComponentScan({ "com.edcircle.store", "com.edcircle.security", "com.edcircle.ui" })
@@ -33,6 +38,15 @@ public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+	}
+
+	@Bean
+	@Primary
+	public ObjectMapper mapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return mapper;
 	}
 
 	@Autowired
@@ -50,16 +64,5 @@ public class Application {
 
 		// save user
 		userService.save(admin);
-
-		User user = new User();
-		user.setUsername("user");
-		user.setFirstName("User");
-		user.setLastName("Last");
-		user.setEmail("user@test.com");
-		user.setPassword("pass");
-		user.addRole(new UserRole("USER"));
-
-		// save user
-		userService.save(user);
 	}
 }

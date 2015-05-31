@@ -1,5 +1,6 @@
 package com.edcircle.store.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -36,5 +37,10 @@ public class DefaultUserService implements UserService {
 	@Override
 	public Optional<User> findByUsername(String username) {
 		return userRepo.findByUsername(username);
+	}
+
+	@Override
+	public List<User> findByUsernameLike(String username) {
+		return userRepo.findByUsernameLike(username);
 	}
 }

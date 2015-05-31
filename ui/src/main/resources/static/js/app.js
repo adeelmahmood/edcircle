@@ -1,7 +1,8 @@
 var app = angular.module('edcircle', 
-		['ngResource', 'ui.router', 'ngMaterial', 'ngMdIcons' , 'ngMessages', 'ngAnimate']);
+		['ngResource', 'ui.router', 'ngMaterial', 'ngMdIcons' , 'ngMessages']);
 
-app.controller('HomeCtrl', [ '$scope', '$mdSidenav',  function($scope, $resource, $mdSidenav) {
+app.controller('HomeCtrl', ['$scope', '$mdSidenav', '$resource', 
+                             function($scope, $mdSidenav, $resource) {
 	
 	$scope.toggleSidenav = function(menuId) {
 		$mdSidenav(menuId).toggle();
@@ -15,26 +16,79 @@ app.controller('HomeCtrl', [ '$scope', '$mdSidenav',  function($scope, $resource
 		link: 'register-school',
 		title: 'Register New School',
 		icon: 'school'
+	}, {
+		link: 'schools',
+		title: 'Registered Schools',
+		icon: 'view_list'
 	}];
 	
-}])
-app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$mdToast', 
-		'$mdDialog', '$filter', function($scope, $resource, $mdToast, $mdDialog, $filter) {
+	$scope.schoolsMenu = [];
+	$scope.schoolsQuery = $resource('/query/schools', {isArray: false});
 
-	$scope.school = {
-			name: "test school",
-			type: "HIGH_SCHOOL",
-			externalResources: [{
-				url: "http://github.com"
-			}, {
-				url: "http://linkedin.com"
-			}], 
-			admins: [{
-				firstName: 'test',
-				lastName: 'user',
-				username: 'testuser'
-			}]
-		};
+	//refresh schools menu list
+	$scope.refreshSchoolsMenu = function() {
+		$scope.schoolsQuery.query({}, function(schools) {
+			$scope.schools = schools;
+			angular.forEach(schools, function(school, key) {
+				if($scope.findByParam($scope.schoolsMenu, 'id', school.id) == -1) {
+					$scope.schoolsMenu.push({
+						id: school.id,
+						link: '/school-home/' + school.id,
+						title: school.name,
+						icon: 'settings'
+					});
+				}
+			});
+		});
+	};
+	$scope.refreshSchoolsMenu();
+	
+	$scope.findByParam = function(arr, param, value) {
+		var indx = -1;
+		angular.forEach(arr, function(item, key) {
+			if(item[param] == value) {
+				indx = key;
+			}
+		});
+		return indx;
+	};
+	
+}])
+app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$state', '$stateParams', '$mdToast', 
+		'$mdDialog', '$filter', function($scope, $resource, $state, $stateParams, $mdToast, $mdDialog, $filter) {
+
+	$scope.school = {};
+	
+	if($stateParams.schoolId) {
+		$resource('/query/schools/:schoolId', {isArray: false})
+			.get({schoolId:$stateParams.schoolId}, function(data) {
+				$scope.school = data;
+		});
+	}
+	
+	$scope.deleteSchool = $resource('/schools/delete/:schoolId', {isArray: false});
+	$scope.delete = function(ev) {
+		var confirm = $mdDialog.confirm()
+	      .title('Delete Confirmation')
+	      .content('Are you sure you want to delete ' + $scope.school.name + ' ?')
+	      .ariaLabel('Delete Cofirmation')
+	      .ok('Yes')
+	      .cancel('No')
+	      .targetEvent(ev);
+	    $mdDialog.show(confirm).then(function() {
+	    	$scope.deleteSchool
+				.query({schoolId:$scope.school.id}, function(data) {
+					$state.transitionTo('schools', {}, { reload: true, inherit: true, notify: true });
+					$mdToast.show(
+						$mdToast.simple()
+						.content('School ' + $scope.school.name + ' delete successfully'));
+
+					//delete from js entities
+					$scope.schools.splice($scope.findByParam($scope.schools, 'id', $scope.school.id), 1);
+					$scope.schoolsMenu.splice($scope.findByParam($scope.schoolsMenu, 'id', $scope.school.id), 1);
+			});
+	    });
+	};
 	
 	$scope.deleteEntity = function(ev, items, param, val) {
 		var confirm = $mdDialog.confirm()
@@ -76,15 +130,79 @@ app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$mdToast',
 		})
 	};
 	
-	var saveSchool = $resource('/schools/save', {isArray:false});
+	$scope.saveSchool = $resource('/schools', {isArray:false});
 	$scope.confirm = function() {
-		saveSchool.save(JSON.stringify($scope.cons), function(saved) {
-			$state.transitionTo('home', {}, { reload: true, inherit: true, notify: true });
+		//add admin role to new admins
+		angular.forEach($scope.school.admins, function(admin, key) {
+			if(!admin.id) {
+				admin.roles = [].concat({role: 'SCHOOL_ADMIN'});
+			}
+		});
+		//save school
+		$scope.saveSchool.save(JSON.stringify($scope.school), function(saved) {
+			$state.transitionTo('schools', {}, { reload: true, inherit: true, notify: true });
 			$mdToast.show(
 				$mdToast.simple()
 				.content('School ' + saved.name + ' saved successfully'));
+			$scope.refreshSchoolsMenu();
 		})
 	};
+	
+	$scope.classesQuery = $resource('/query/classes/school/:schoolId', {isArray:false});
+	$scope.classesQuery
+		.query({schoolId:$stateParams.schoolId}, function(data) {
+			$scope.classes = data;
+	});
+	
+	$scope.saveClass = $resource('/classes', {isArray:false});
+	$scope.showClassPopup = function(ev, cls) {
+		$mdDialog.show({
+			controller: function DialogController($scope, $mdDialog) {
+				$scope.cls = cls || {};
+				$scope.close = function() {	
+					$mdDialog.hide($scope.cls);
+				}
+			},
+			templateUrl: 'partials/class/addclass.popup.html',
+			targetEvent: ev		
+		})
+		.then(function(_cls) {
+			_cls.school = $scope.school;
+			_cls.teacher = _cls.teacher || {};
+			if(!_cls.teacher.id) {
+				_cls.teacher.roles = [].concat('SCHOOL_TEACHER');
+			}
+			$scope.saveClass.save(JSON.stringify(_cls), function(saved) {
+				if(!_cls.id) {
+					$scope.classes.push(saved);
+					$mdToast.show(
+						$mdToast.simple()
+						.content('Class saved successfully'));
+				}
+			});
+		})
+	};
+	
+	$scope.deleteClassQuery = $resource('/classes/delete/:classId', {isArray: false});
+	$scope.deleteClass = function(ev, cls) {
+		var confirm = $mdDialog.confirm()
+	      .title('Delete Confirmation')
+	      .content('Are you sure ?')
+	      .ariaLabel('Delete Cofirmation')
+	      .ok('Yes')
+	      .cancel('No')
+	      .targetEvent(ev);
+	    $mdDialog.show(confirm).then(function() {
+	    	$scope.deleteClassQuery
+				.query({classId:cls.id}, function(data) {
+					$state.transitionTo($state.current, {}, { reload: true, inherit: true, notify: true });
+					$mdToast.show(
+						$mdToast.simple()
+						.content('Class delete successfully'));
+					$scope.classes.splice($scope.findByParam($scope.classes, 'id', cls.id), 1);
+			});
+	    });
+	}
 	
 }])
 .config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
@@ -97,7 +215,7 @@ app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$mdToast',
 	  $mdThemingProvider.definePalette('customBlue', customBlueMap);
 	
 	  $mdThemingProvider.theme('default')
-	    .primaryPalette('light-blue', {
+	    .primaryPalette('light-green', {
 	      'default': '500',
 	      'hue-1': '50'
 	    })
@@ -112,9 +230,23 @@ app.controller('RegisterSchoolCtl', [ '$scope', '$resource', '$mdToast',
 			url: '/',
 			templateUrl: 'partials/home.html'
 		})
+		.state('schools', {
+			url: '/schools',
+			templateUrl: 'partials/school/schools.html'
+		})
 		.state('register-school', {
 			url: '/register-school',
 			templateUrl: 'partials/school/school.html',
+			controller: 'RegisterSchoolCtl'
+		})
+		.state('school', {
+			url: '/school/:schoolId',
+			templateUrl: 'partials/school/school.html',
+			controller: 'RegisterSchoolCtl'
+		})
+		.state('school-home', {
+			url: '/school-home/:schoolId',
+			templateUrl: 'partials/school/school-home.html',
 			controller: 'RegisterSchoolCtl'
 		})
 		;

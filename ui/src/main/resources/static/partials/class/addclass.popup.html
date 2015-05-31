@@ -1,0 +1,60 @@
+<md-dialog aria-label="Class Configuration" class="popup" flex="50">
+<form>
+	<md-dialog-content class="sticky-container">
+		<md-subheader class="md-sticky-no-effect md-title">Class Configuration</md-subheader>
+		<md-content layout-padding layout="row" layout-md="column">
+			<md-input-container flex>
+				<label>Grade</label>
+				<input ng-model="cls.grade" />
+			</md-input-container>
+			<md-input-container flex>
+				<label>Section</label>
+				<input ng-model="cls.section" />
+			</md-input-container>
+		</md-content>
+		<md-content layout-padding>
+			<div layout="column">
+				<md-input-container flex>
+					<label>Subject</label>
+					<input ng-model="cls.subject" />
+				</md-input-container>
+			</div>	
+		</md-content>
+		<md-divider/>
+		<md-subheader>Teacher</md-subheader>
+		<md-content layout-padding layout="row" layout-md="column">
+			<md-input-container flex>
+				<label>First Name</label>
+				<input ng-model="cls.teacher.firstName" />
+			</md-input-container>
+			<md-input-container flex>
+				<label>Last Name</label>
+				<input ng-model="cls.teacher.lastName" />
+			</md-input-container>
+		</md-content>
+		<md-content layout-padding>
+			<div layout="column">
+				<md-input-container flex>
+					<label>Email</label>
+					<input ng-model="cls.teacher.email" />
+				</md-input-container>
+			</div>	
+		</md-content>
+		<md-content layout-padding>
+			<div layout layout-md="column">
+				<md-input-container flex>
+					<label>Username</label>
+					<input ng-model="cls.teacher.username" />
+				</md-input-container>
+				<md-input-container flex>
+					<label>Password</label>
+					<input type="password" ng-model="cls.teacher.password" />
+				</md-input-container>
+			</div>
+		</md-content>
+	</md-dialog-content>
+	<div class="md-actions" layout="row">
+		<md-button ng-click="close()"> Save Configuration</md-button>
+	</div>
+</form>
+</md-dialog>

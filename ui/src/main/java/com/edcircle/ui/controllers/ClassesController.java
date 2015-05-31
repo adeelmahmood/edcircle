@@ -11,25 +11,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edcircle.store.entities.School;
+import com.edcircle.store.entities.SchoolClass;
 import com.edcircle.store.exceptions.DataUpdateException;
-import com.edcircle.store.services.SchoolService;
+import com.edcircle.store.services.SchoolClassService;
 
 @RestController
-@RequestMapping("/schools")
-public class SchoolsController {
+@RequestMapping("/classes")
+public class ClassesController {
 
-	private final SchoolService service;
+	private final SchoolClassService service;
 
 	@Autowired
-	public SchoolsController(SchoolService service) {
+	public ClassesController(SchoolClassService service) {
 		this.service = service;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> save(@RequestBody School school) {
+	public ResponseEntity<?> save(@RequestBody SchoolClass schoolClass) {
 		try {
-			School saved = service.save(school);
+			SchoolClass saved = service.save(schoolClass);
 			return new ResponseEntity<>(saved, HttpStatus.ACCEPTED);
 		} catch (DataUpdateException e) {
 			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -39,9 +39,9 @@ public class SchoolsController {
 	@RequestMapping("/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable long id) {
 		try {
-			Optional<School> schoolResult = service.findById(id);
-			if (schoolResult.isPresent()) {
-				service.delete(schoolResult.get());
+			Optional<SchoolClass> classResult = service.findById(id);
+			if (classResult.isPresent()) {
+				service.delete(classResult.get());
 			}
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (DataUpdateException e) {

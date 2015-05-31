@@ -45,16 +45,17 @@ public class SecurityConfiguration extends WebMvcConfigurerAdapter {
 		protected void configure(HttpSecurity http) throws Exception {
 			// @formatter:off
 			http
+				.csrf().disable()
 				.authorizeRequests()
 					.anyRequest().fullyAuthenticated()
-					.and()
-				.httpBasic()
 					.and()
 				.logout()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 					.and()
-				.exceptionHandling()
-				.accessDeniedPage("/access?error");
+				.httpBasic()
+//				.exceptionHandling()
+//				.accessDeniedPage("/access?error");
+				;
 			// @formatter:on
 		}
 

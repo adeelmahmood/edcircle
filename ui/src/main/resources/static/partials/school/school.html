@@ -1,7 +1,8 @@
 <md-content flex md-scroll-y>
 <form>
 	<div layout layout-align="end center">
-		<md-button class="md-hue-2 md-primary md-raised" ng-click="confirm()">Confirm
+		<md-button class="md-hue-2 md-warn md-raised" ng-show="school.id" ng-click="delete()">Delete School</md-button>
+		<md-button class="md-hue-2 md-primary md-raised" ng-disabled="!school.name" ng-click="confirm()">Confirm
 		Registration</md-button>
 	</div>
 	<md-card flex-gt-sm="90" flex-gt-md="80">

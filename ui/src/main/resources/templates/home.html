@@ -24,6 +24,17 @@
 					</a> 
 				</md-list-item> 
 				<md-divider /> 
+				<md-subheader ng-show="schools.length>0">Schools</md-subheader>
+				<md-list-item ng-show="schools.length>0" ng-repeat="item in schoolsMenu"> 
+					<a ng-href="#{{item.link}}">
+						<md-item-content md-ink-ripple="" layout="row" layout-align="start center">
+							<div class="inset">
+								<ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+							</div>
+							<div class="inset">{{item.title}}</div>
+						</md-item-content>
+					</a> 
+				</md-list-item> 
 			</md-list> 
 		</md-sidenav>
 

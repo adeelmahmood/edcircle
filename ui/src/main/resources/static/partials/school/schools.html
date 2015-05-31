@@ -1,0 +1,18 @@
+<md-content flex md-scroll-y>
+	<h3 class="md-pageheader">Registered Schools</h3>
+	<div class="inset" hide-sm></div>
+	<div layout="row" layout-sm="column">
+		<md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="4"
+			md-row-height-gt-md="1:1" md-row-height="2:2"
+			md-gutter="12px" md-gutter-gt-sm="50px" flex class="gridList">
+			
+			<md-grid-tile class="gray" ng-repeat="school in schools">
+				<h1 class="md-title"><a href ui-sref="school({schoolId:school.id})">{{school.name}}</a></h1>
+				<md-grid-tile-footer>
+					<h3 class="md-subhead">{{school.type}}</h3>
+				</md-grid-tile-footer>
+			</md-grid-tile>
+			
+		</md-grid-list>
+	</div>
+</md-content>
